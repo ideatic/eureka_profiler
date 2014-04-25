@@ -94,10 +94,10 @@ class EurekaProfiler
     /**
      * Logs an event in the current section
      *
-     * @param string|ProfilerEvent $name
+     * @param string|EurekaProfiler_Event $name
      * @param boolean|int          $backtrace Enable or disable the backtract info for the event. If it's a number, it will represent the number of steps deleted
      *
-     * @return ProfilerEvent
+     * @return EurekaProfiler_Event
      */
     public function log_event($name, $type = 'app', $data = null, $backtrace = true)
     {
@@ -105,15 +105,15 @@ class EurekaProfiler
             return false;
         }
 
-        if ($name instanceof ProfilerEvent) {
+        if ($name instanceof EurekaProfiler_Event) {
             $event = $name;
         } else {
-            $event = new ProfilerEvent($this->_session, $name);
+            $event = new EurekaProfiler_Event($this->_session, $name);
             $event->type = $type;
             $event->data = $data;
         }
         if ($backtrace) {
-            $event->backtrace = ProfilerTools::backtrace_small(null, is_bool($backtrace) ? 2 : 2 + $backtrace);
+            $event->backtrace = EurekaProfiler_Tools::backtrace_small(null, is_bool($backtrace) ? 2 : 2 + $backtrace);
         }
 
         $this->_session->events[] = $event;
@@ -126,7 +126,7 @@ class EurekaProfiler
      */
     public function log_query($query, $text = '', $duration = 0)
     {
-        $log = new ProfilerQuery($this->_session);
+        $log = new EurekaProfiler_Query($this->_session);
         $log->query = $query;
         $log->text = $text;
         $log->duration = $duration;

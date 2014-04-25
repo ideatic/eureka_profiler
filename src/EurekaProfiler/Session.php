@@ -20,7 +20,7 @@ class EurekaProfiler_Session
 
     /**
      * Events logged in this session
-     * @var ProfilerEvent[]
+     * @var EurekaProfiler_Event[]
      */
     public $events = array();
     public $response;
@@ -37,7 +37,7 @@ class EurekaProfiler_Session
     public $response_headers;
 
     /**
-     * @var ProfilerIncluded[]
+     * @var EurekaProfiler_Included[]
      */
     public $loaded_files = array();
 
@@ -48,7 +48,7 @@ class EurekaProfiler_Session
 
     /**
      * Gets all declared events
-     * @return ProfilerEvent[]
+     * @return EurekaProfiler_Event[]
      */
     public function all_events()
     {
@@ -72,7 +72,7 @@ class EurekaProfiler_Session
      *
      * @param type $type
      *
-     * @return ProfilerEvent[]
+     * @return EurekaProfiler_Event[]
      */
     public function events_of_type($type)
     {
@@ -154,7 +154,7 @@ class EurekaProfiler_Session
         //Included files
         $files = get_included_files();
         foreach ($files as $file) {
-            $this->loaded_files[] = new ProfilerIncluded(ProfilerTools::clean_path($file), filesize($file));
+            $this->loaded_files[] = new EurekaProfiler_Included(ProfilerTools::clean_path($file), filesize($file));
         }
 
         //Explain queries
@@ -171,7 +171,7 @@ class EurekaProfiler_Session
 
 }
 
-class ProfilerEvent
+class EurekaProfiler_Event
 {
 
     /**
@@ -199,7 +199,7 @@ class ProfilerEvent
     public $duration;
 
     /**
-     * @var ProfilerEvent
+     * @var EurekaProfiler_Event
      */
     public $parent;
 
@@ -210,7 +210,7 @@ class ProfilerEvent
 
     /**
      *
-     * @var ProfilerEvent[]
+     * @var EurekaProfiler_Event[]
      */
     public $children = array();
 
@@ -233,7 +233,7 @@ class ProfilerEvent
         $this->name = $name;
     }
 
-    public function add_child(ProfilerEvent $event)
+    public function add_child(EurekaProfiler_Event $event)
     {
         $this->children[] = $event;
         $event->parent = $this;
@@ -258,7 +258,7 @@ class ProfilerEvent
 
 }
 
-class ProfilerQuery extends ProfilerEvent
+class EurekaProfiler_Query extends EurekaProfiler_Event
 {
 
     /**
@@ -283,7 +283,7 @@ class ProfilerQuery extends ProfilerEvent
 
 }
 
-class ProfilerIncluded
+class EurekaProfiler_Included
 {
 
     public $path;

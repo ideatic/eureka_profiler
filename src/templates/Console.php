@@ -345,7 +345,7 @@ function render_events(EurekaProfiler_Session $session, $tab)
                 <?php
 
                 /**
-                 * @param ProfilerEvent[] $events
+                 * @param EurekaProfiler_Event[] $events
                  */
                 function _render_events_chart(
                     $events,
@@ -450,7 +450,7 @@ function render_events(EurekaProfiler_Session $session, $tab)
         <?php
 
         /**
-         * @param ProfilerEvent[] $events
+         * @param EurekaProfiler_Event[] $events
          */
         function _render_events($events, $level, $types_color)
         {
@@ -534,7 +534,7 @@ function render_db(EurekaProfiler_Session $session)
             <?php
             $i = 0;
             foreach ($queries as $query) :
-                /* @var $query ProfilerQuery */
+                /* @var $query EurekaProfiler_Query */
 
                 //EXPLAIN info
                 if (empty($query->explain)) {

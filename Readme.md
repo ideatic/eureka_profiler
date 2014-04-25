@@ -6,6 +6,6 @@
 
 See the example source for more information.
 
-## Animated demo
+## Screenshot
 
 ![](screenshot.png)
