@@ -112,8 +112,8 @@ class EurekaProfiler_Session
         $this->duration = microtime(true) - $this->start;
 
         //Request data
-        $this->url = ProfilerTools::current_url();
-        $this->client_ip = ProfilerTools::client_ip();
+        $this->url = EurekaProfiler_Tools::current_url();
+        $this->client_ip = EurekaProfiler_Tools::client_ip();
         $this->user_agent = $_SERVER['HTTP_USER_AGENT'];
 
         $this->get_data = $_GET;
@@ -154,7 +154,7 @@ class EurekaProfiler_Session
         //Included files
         $files = get_included_files();
         foreach ($files as $file) {
-            $this->loaded_files[] = new EurekaProfiler_Included(ProfilerTools::clean_path($file), filesize($file));
+            $this->loaded_files[] = new EurekaProfiler_Included(EurekaProfiler_Tools::clean_path($file), filesize($file));
         }
 
         //Explain queries

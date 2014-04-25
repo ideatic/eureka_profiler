@@ -52,7 +52,7 @@
 /* Toggle */
 .app-console-toggle{
     padding-left: 20px;
-    background: #000 url('images/up.png') no-repeat center left;
+    background: #000 url('../images/up.png') no-repeat center left;
     color: #fff !important;
     font-weight: bold;
     float: left;
@@ -61,7 +61,7 @@
 }
 
 .app-console.active .app-console-toggle{
-    background-image: url('images/down.png');
+    background-image: url('../images/down.png');
 }
 
 /* Main content */
@@ -124,7 +124,7 @@
     border-top: 1px solid #CCC;
     border-bottom: 1px solid #CCC;
     overflow: hidden;
-    background: url("images/overlay.gif") repeat #222;
+    background: url("../images/overlay.gif") repeat #222;
 }
 
 .app-tab {
@@ -315,7 +315,7 @@
 }
 
 .app-popup {
-    background: url("images/window.png") center no-repeat;
+    background: url("../images/window.png") center no-repeat;
 }
 
 /* Popup mode */

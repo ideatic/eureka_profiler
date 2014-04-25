@@ -8,7 +8,7 @@ $tabs = array(
         'id' => 'request',
         'color' => '#588E13',
         'text' => 'Request',
-        'summary' => ProfilerTools::readable_number(
+        'summary' => EurekaProfiler_Tools::readable_number(
                                   count($session->request_headers) + count($session->get_data) +
                                   count($session->post_data) + count($session->cookies)
             )
@@ -18,26 +18,26 @@ $tabs = array(
         'color' => '#3769A0',
         'alternate' => '#2B5481',
         'text' => 'Response',
-        'summary' => ProfilerTools::readable_interval($session->duration, 1)
+        'summary' => EurekaProfiler_Tools::readable_interval($session->duration, 1)
     ),
     array(
         'id' => 'events',
         'color' => '#949494',
         'text' => 'Events',
-        'summary' => ProfilerTools::readable_number(count($session->all_events()))
+        'summary' => EurekaProfiler_Tools::readable_number(count($session->all_events()))
     ),
     array(
         'id' => 'db',
         'color' => '#953FA1',
         'text' => 'Database',
-        'summary' => ProfilerTools::readable_number(count($session->events_of_type('db'))) . ' Queries'
+        'summary' => EurekaProfiler_Tools::readable_number(count($session->events_of_type('db'))) . ' Queries'
     ),
     array(
         'id' => 'included',
         'color' => '#B72F09',
         'alternate' => '#9B2700',
         'text' => 'Included',
-        'summary' => ProfilerTools::readable_number(count($session->loaded_files)) . ' Files'
+        'summary' => EurekaProfiler_Tools::readable_number(count($session->loaded_files)) . ' Files'
     ),
 );
 ?>
@@ -45,7 +45,7 @@ $tabs = array(
         <!--    Assets    -->
         <div class="app-assets">
             <style type="text/css">
-                @import url("<?= $static_url ?>/console.css");
+                @import url("<?= $static_url ?>/css/console.css");
             </style>
             <script>window.jQuery || document.write('<script src="<?= $static_url ?>/js/jquery.js"><\/script>')</script>
             <script type="text/javascript" src="<?= $static_url ?>/js/console.js"></script>
@@ -199,21 +199,21 @@ function render_request(EurekaProfiler_Session $session)
     ?>
     <table class="summary">
         <tr>
-            <td style="background: #588E13;"><h3><?= ProfilerTools::readable_size($request_size) ?></h3>
+            <td style="background: #588E13;"><h3><?= EurekaProfiler_Tools::readable_size($request_size) ?></h3>
                 <h4>Size</h4>
             </td>
-            <td style="background: #B72F09;"><h3><?= ProfilerTools::readable_number(count($session->get_data)) ?></h3>
+            <td style="background: #B72F09;"><h3><?= EurekaProfiler_Tools::readable_number(count($session->get_data)) ?></h3>
                 <h4>GET</h4>
             </td>
         </tr>
         <tr>
             <td style="background: #D28C00;" class="border"><h3><?=
-                    ProfilerTools::readable_number(
+                    EurekaProfiler_Tools::readable_number(
                                  count($session->post_data)
                     ) ?></h3>
                 <h4>POST</h4>
             </td>
-            <td style="background: #3769A0;"><h3><?= ProfilerTools::readable_number(count($session->cookies)) ?></h3>
+            <td style="background: #3769A0;"><h3><?= EurekaProfiler_Tools::readable_number(count($session->cookies)) ?></h3>
                 <h4>Cookie</h4>
             </td>
         </tr>
@@ -242,7 +242,7 @@ function render_response(EurekaProfiler_Session $session, $tab)
         <tr>
             <td style="background: <?= $tab['color'] ?>">
                 <h3>
-                    <?= ProfilerTools::readable_interval($session->duration, 1) ?>
+                    <?= EurekaProfiler_Tools::readable_interval($session->duration, 1) ?>
                     (<?php
                     $db = $session->total_query_time();
                     $php = $session->duration - $db;
@@ -254,7 +254,7 @@ function render_response(EurekaProfiler_Session $session, $tab)
         </tr>
         <tr>
             <td style="background: <?= $tab['alternate'] ?>;">
-                <h3><?= ProfilerTools::readable_size($session->memory_used) ?> / <?= $session->memory_limit ?></h3>
+                <h3><?= EurekaProfiler_Tools::readable_size($session->memory_used) ?> / <?= $session->memory_limit ?></h3>
                 <h4>Memory used / available</h4>
             </td>
         </tr>
@@ -262,7 +262,7 @@ function render_response(EurekaProfiler_Session $session, $tab)
             <td style="background: <?= $tab['color'] ?>;" class="border">
                 <h3><?php
                     $var = $session->max_execution_time;
-                    echo is_numeric($var) ? ProfilerTools::readable_interval($var) : $var
+                    echo is_numeric($var) ? EurekaProfiler_Tools::readable_interval($var) : $var
                     ?>
                 </h3>
                 <h4>Max execution</h4>
@@ -277,7 +277,7 @@ function render_response(EurekaProfiler_Session $session, $tab)
 
             //HTML Response
             if (!empty($session->response)) {
-                $name = 'Response (' . ProfilerTools::readable_size(strlen($session->response)) . ')';
+                $name = 'Response (' . EurekaProfiler_Tools::readable_size(strlen($session->response)) . ')';
                 basic_row('HTML', $name, render_data($session->response), '#3769A0');
             }
 
@@ -345,7 +345,7 @@ function render_events(EurekaProfiler_Session $session, $tab)
                 <?php
 
                 /**
-                 * @param EurekaProfiler_Event[] $events
+                 * @param ProfilerEvent[] $events
                  */
                 function _render_events_chart(
                     $events,
@@ -371,7 +371,7 @@ function render_events(EurekaProfiler_Session $session, $tab)
                             'width:' . $column_width . '%',
                         );
                         $title = "$event->type: $event->name" . ($event->duration ? (' (' .
-                                                                                     ProfilerTools::readable_interval(
+                                                                                     EurekaProfiler_Tools::readable_interval(
                                                                                                   $event->duration
                                                                                      ) . ')') : '');
                         echo '<div style="' . implode(';', $css) . '" data-index="' . $index . '">' . $title . '</div>';
@@ -429,8 +429,8 @@ function render_events(EurekaProfiler_Session $session, $tab)
                 ?>
                 <td style="background: <?= $types_color[$type] ?>" class="<?= $class ?>">
                     <h3><?= $type ?></h3>
-                    <h4><?= ProfilerTools::readable_number($frec) ?>, <?=
-                        ProfilerTools::readable_interval(
+                    <h4><?= EurekaProfiler_Tools::readable_number($frec) ?>, <?=
+                        EurekaProfiler_Tools::readable_interval(
                                      $types_duration[$type],
                                          1
                         ) ?></h4>
@@ -450,7 +450,7 @@ function render_events(EurekaProfiler_Session $session, $tab)
         <?php
 
         /**
-         * @param EurekaProfiler_Event[] $events
+         * @param ProfilerEvent[] $events
          */
         function _render_events($events, $level, $types_color)
         {
@@ -466,7 +466,7 @@ function render_events(EurekaProfiler_Session $session, $tab)
                 }
                 if ($event->duration) {
                     $info .= ' <span class="event-duration" title="Event duration">(' .
-                             ProfilerTools::readable_interval($event->duration) . ')</span>';
+                             EurekaProfiler_Tools::readable_interval($event->duration) . ')</span>';
                 }
                 if ($event->backtrace) {
                     $info .= '<p class="event-backtrace" title="Event backtrace">' . $event->backtrace . '</p>';
@@ -480,7 +480,7 @@ function render_events(EurekaProfiler_Session $session, $tab)
                 }
 
                 $timemark = '<span class="more" title="Event time">' .
-                            ProfilerTools::readable_interval($event->timemark) . '</span>';
+                            EurekaProfiler_Tools::readable_interval($event->timemark) . '</span>';
                 basic_row($event->type, $timemark . $info . $children, null, $types_color[$event->type]);
             }
             echo '</table>';
@@ -505,7 +505,7 @@ function render_db(EurekaProfiler_Session $session)
     <table class="summary">
         <tr>
             <td style="background: #953FA1;">
-                <h3><?= ProfilerTools::readable_interval($session->total_query_time()) ?></h3>
+                <h3><?= EurekaProfiler_Tools::readable_interval($session->total_query_time()) ?></h3>
                 <h4>Total time</h4>
             </td>
         </tr>
@@ -534,7 +534,7 @@ function render_db(EurekaProfiler_Session $session)
             <?php
             $i = 0;
             foreach ($queries as $query) :
-                /* @var $query EurekaProfiler_Query */
+                /* @var $query ProfilerQuery */
 
                 //EXPLAIN info
                 if (empty($query->explain)) {
@@ -571,7 +571,7 @@ function render_db(EurekaProfiler_Session $session)
                 basic_row(
                     $i + 1,
                     $html,
-                    ProfilerTools::readable_interval($query->duration),
+                    EurekaProfiler_Tools::readable_interval($query->duration),
                     $colors[$i % count($colors)]
                 );
                 $i++;
@@ -588,13 +588,13 @@ function render_included(EurekaProfiler_Session $session, $tab)
     <table class="summary">
         <tr>
             <td style="background: <?= $tab['color'] ?>;">
-                <h3><?= ProfilerTools::readable_number(count($session->loaded_files)) ?></h3>
+                <h3><?= EurekaProfiler_Tools::readable_number(count($session->loaded_files)) ?></h3>
                 <h4>Total files</h4>
             </td>
         </tr>
         <tr>
             <td style="background: <?= $tab['alternate'] ?>;">
-                <h3><?= ProfilerTools::readable_size($session->total_included_size()) ?></h3>
+                <h3><?= EurekaProfiler_Tools::readable_size($session->total_included_size()) ?></h3>
                 <h4>Total size</h4>
             </td>
         </tr>
@@ -616,7 +616,7 @@ function render_included(EurekaProfiler_Session $session, $tab)
             <?php
             $show = array();
             foreach ($session->loaded_files as $file) {
-                $show[$file->path] = ProfilerTools::readable_size($file->size);
+                $show[$file->path] = EurekaProfiler_Tools::readable_size($file->size);
             }
             basic_row('', $show);
             ?>
