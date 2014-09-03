@@ -41,7 +41,7 @@ $tabs = array(
     ),
 );
 ?>
-    <div class="app-console">
+    <div class="app-console <?= !$show_at_bottom?'active static':'' ?>">
         <!--    Assets    -->
         <div class="app-assets">
             <style type="text/css">
@@ -132,7 +132,7 @@ function render_data($data)
                 return '';
             }
         } else {
-            return '<pre>' . print_r($data, true) . '</pre>';
+            return '<pre>' . htmlspecialchars(print_r($data, true)) . '</pre>';
         }
     }
 }

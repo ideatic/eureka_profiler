@@ -8,6 +8,7 @@ abstract class EurekaProfiler_DB_Adapter
 
     /**
      * Run a database query and return the data as an associative array
+     * @return array
      */
     public abstract function query($query);
 

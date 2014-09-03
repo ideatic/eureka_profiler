@@ -57,17 +57,29 @@ abstract class EurekaProfiler_Tools
         return $result;
     }
 
-    public static function readable_size($bytes)
+    public static function readable_size($size, $kilobyte = 1024, $format = '%size% %unit%')
     {
-        if ($bytes > 1000000000) {
-            return round($bytes / 1000000000, 2) . ' GB';
-        } elseif ($bytes > 1000000) {
-            return round($bytes / 1000000, 2) . ' MB';
-        } elseif ($bytes > 1000) {
-            return round($bytes / 1000, 2) . ' KB';
+        if ($size < $kilobyte) {
+            $unit = 'bytes';
         } else {
-            return "$bytes bytes";
+            $size = $size / $kilobyte;
+            $units = array('KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+            foreach ($units as $unit) {
+                if ($size > $kilobyte) {
+                    $size = $size / $kilobyte;
+                } else {
+                    break;
+                }
+            }
         }
+
+        return strtr(
+            $format,
+            array(
+                '%size%' => self::readable_number($size, 2),
+                '%unit%' => $unit
+            )
+        );
     }
 
     private static $_special_paths = array();
