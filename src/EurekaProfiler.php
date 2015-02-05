@@ -87,7 +87,7 @@ class EurekaProfiler
                 $this->_table,
                 array(
                     'date' => $this->_session->start,
-                    'url' => EurekaProfiler_Tools::current_url(),
+                    'url'  => EurekaProfiler_Tools::current_url(),
                     'data' => base64_encode(gzencode(serialize($this->_session), 9))
                 )
             );
@@ -127,9 +127,13 @@ class EurekaProfiler
             $session_meta = $session_meta[0];
             $session = unserialize(gzdecode(base64_decode($session_meta['data'])));
         } else {
-            if (isset($_REQUEST['remove']) && is_numeric($_REQUEST['remove'])) {
+            if (isset($_REQUEST['remove'])) {
                 $session_id = $_REQUEST['remove'];
-                $this->db_adapter->query("DELETE FROM $this->_table WHERE id=$session_id");
+                if ($session_id == 'all') {
+                    $this->db_adapter->query("TRUNCATE $this->_table");
+                } elseif (is_numeric($session_id)) {
+                    $this->db_adapter->query("DELETE FROM $this->_table WHERE id=$session_id");
+                }
             }
 
             $offset = isset($_REQUEST['offset']) && is_numeric($_REQUEST['offset']) ? $_REQUEST['offset'] : 0;

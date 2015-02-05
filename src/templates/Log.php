@@ -2,6 +2,9 @@
     <h1><?= $session_meta['url'] ?></h1>
     <?= $this->show_console($session, false) ?>
 <?php else: ?>
+    <p class="text-right">
+        <a class="btn btn-sm btn-danger" href="?remove=all"><i class="icon-times icon-remove icon-white fa fa-times"></i> Remove all</a>
+    </p>
     <div class="table-responsive">
         <table class="table table-hover table-bordered table-striped">
             <thead>
@@ -34,8 +37,8 @@
                  'Showing {offset} - {end} of {total}',
                  array(
                      '{offset}' => EurekaProfiler_Tools::readable_number($offset),
-                     '{end}' => EurekaProfiler_Tools::readable_number($offset + count($sessions)),
-                     '{total}' => EurekaProfiler_Tools::readable_number($total),
+                     '{end}'    => EurekaProfiler_Tools::readable_number($offset + count($sessions)),
+                     '{total}'  => EurekaProfiler_Tools::readable_number($total),
                  )
              ) ?>
         </span>

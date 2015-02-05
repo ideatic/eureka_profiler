@@ -70,7 +70,7 @@ class EurekaProfiler_Session
     /**
      * Gets events of the indicated type
      *
-     * @param type $type
+     * @param string $type
      *
      * @return EurekaProfiler_Event[]
      */
@@ -85,6 +85,10 @@ class EurekaProfiler_Session
         return $result;
     }
 
+    /**
+     * Get the total time consumed by database query events
+     * @return float
+     */
     public function total_query_time()
     {
         $total = 0;
@@ -94,6 +98,10 @@ class EurekaProfiler_Session
         return $total;
     }
 
+    /**
+     * Get the total size, in bytes, of the included PHP files
+     * @return int
+     */
     public function total_included_size()
     {
 
@@ -277,7 +285,7 @@ class EurekaProfiler_Query extends EurekaProfiler_Event
     public function __construct(EurekaProfiler_Session $session)
     {
         parent::__construct($session);
-        $this->query = & $this->name;
+        $this->query = &$this->name;
         $this->type = 'db';
     }
 
