@@ -201,7 +201,7 @@ class EurekaProfiler
     /**
      * Log a database query
      *
-     * @return EurekaProfiler_Event
+     * @return EurekaProfiler_Query
      */
     public function log_query($query, $text = '', $duration = 0)
     {
