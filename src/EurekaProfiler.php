@@ -62,7 +62,6 @@ class EurekaProfiler
                 if ($sibling != $event && $sibling->duration > 0 && $sibling->timemark < $event->timemark &&
                     $sibling->timemark + $sibling->duration > $event->timemark + $event->duration
                 ) {
-
                     $closest = $sibling;
                 }
             }
@@ -88,6 +87,9 @@ class EurekaProfiler
                 array(
                     'date' => $this->_session->start,
                     'url'  => EurekaProfiler_Tools::current_url(),
+                    'time'  => $this->_session->duration,
+                    'status'  => $this->_session->status,
+                    'response_size'  => strlen($this->_session->response),
                     'data' => base64_encode(gzencode(serialize($this->_session), 9))
                 )
             );

@@ -11,12 +11,12 @@ abstract class EurekaProfiler_Tools
         //Prepare units
         $units = array(
             31536000 => '%count% years',
-            2592000 => '%count% months',
-            604800 => '%count% weeks',
-            86400 => '%count% days',
-            3600 => '%count% h',
-            60 => '%count% m',
-            1 => '%count% s',
+            2592000  => '%count% months',
+            604800   => '%count% weeks',
+            86400    => '%count% days',
+            3600     => '%count% h',
+            60       => '%count% m',
+            1        => '%count% s',
         );
         if ($allow_micro) {
             $units['1e-3'] = '%count% ms';
@@ -131,6 +131,12 @@ abstract class EurekaProfiler_Tools
             $protocol .= 's';
         }
 
+        //Port
+        $port = '';
+        if (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] != 80) {
+            $port = ':' . $_SERVER['SERVER_PORT'];
+        }
+
         //Request
         if (isset($_SERVER['REQUEST_URI'])) {
             $request = $_SERVER['REQUEST_URI'];
@@ -154,8 +160,7 @@ abstract class EurekaProfiler_Tools
         }
 
         //Generate full URL
-        return $protocol . "://" . $_SERVER['HTTP_HOST'] .
-               ($_SERVER['SERVER_PORT'] == '80' ? '' : ':' . $_SERVER['SERVER_PORT']) . $request;
+        return $protocol . "://" . $_SERVER['HTTP_HOST'] . $port . $request;
     }
 
     public static function client_ip()

@@ -11,6 +11,9 @@
             <tr>
                 <th>#</th>
                 <th>Date</th>
+                <th>Status</th>
+                <th>Response</th>
+                <th>Time</th>
                 <th>URL</th>
                 <th>Tools</th>
             </tr>
@@ -20,6 +23,9 @@
                 <tr>
                     <td><?= $session['id'] ?></td>
                     <td title="<?= date('r', $session['date']) ?>"><?= EurekaProfiler_Tools::readable_interval(microtime(true) - $session['date']) ?> ago</td>
+                    <td><?= $session['status'] ?></td>
+                    <td><?= EurekaProfiler_Tools::readable_size($session['response_size']) ?></td>
+                    <td><?= EurekaProfiler_Tools::readable_interval($session['time']) ?></td>
                     <td><?= htmlspecialchars($session['url']) ?></td>
                     <td>
                         <a class="btn btn-sm btn-primary" href="?show=<?= $session['id'] ?>"><i class="icon-white icon-search fa fa-search"></i> View</a>

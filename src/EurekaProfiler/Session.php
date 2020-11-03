@@ -23,6 +23,7 @@ class EurekaProfiler_Session
      * @var EurekaProfiler_Event[]
      */
     public $events = array();
+    public $status;
     public $response;
     public $url;
     public $client_ip;
@@ -144,6 +145,7 @@ class EurekaProfiler_Session
         $this->request_headers = array_change_key_case($this->request_headers, CASE_UPPER);
 
         //Response data
+        $this->status=function_exists('http_response_code')? http_response_code():200;
         $this->response = $response;
         $this->response_headers = array();
         if (function_exists('apache_response_headers')) {
@@ -179,128 +181,3 @@ class EurekaProfiler_Session
 
 }
 
-class EurekaProfiler_Event
-{
-
-    /**
-     * Event name
-     * @var string
-     */
-    public $name;
-
-    /**
-     * Event type or category
-     * @var string
-     */
-    public $type;
-
-    /**
-     * Seconds from the current session start till the current event
-     * @var float
-     */
-    public $timemark;
-
-    /**
-     * Event duration (in seconds)
-     * @var float
-     */
-    public $duration;
-
-    /**
-     * @var EurekaProfiler_Event
-     */
-    public $parent;
-
-    /**
-     * @var mixed
-     */
-    public $data;
-
-    /**
-     *
-     * @var EurekaProfiler_Event[]
-     */
-    public $children = array();
-
-    /**
-     *
-     * @var string
-     */
-    public $backtrace;
-    private $_finish_callback;
-
-    /**
-     * @var EurekaProfiler_Session
-     */
-    private $_session;
-
-    public function __construct(EurekaProfiler_Session $session, $name = '')
-    {
-        $this->timemark = microtime(true) - $session->start;
-        $this->_session = $session;
-        $this->name = $name;
-    }
-
-    public function add_child(EurekaProfiler_Event $event)
-    {
-        $this->children[] = $event;
-        $event->parent = $this;
-    }
-
-    public function finish($data = null)
-    {
-        $this->duration = microtime(true) - $this->_session->start - $this->timemark;
-        if (isset($data)) {
-            $this->data = $data;
-        }
-
-        if ($this->_finish_callback) {
-            call_user_func($this->_finish_callback, $this);
-        }
-    }
-
-    public function on_finish($callback)
-    {
-        $this->_finish_callback = $callback;
-    }
-
-}
-
-class EurekaProfiler_Query extends EurekaProfiler_Event
-{
-
-    /**
-     * Real executed query
-     * @var string
-     */
-    public $query;
-
-    /**
-     * Executed query, with placeholders if available
-     * @var string
-     */
-    public $text;
-    public $explain;
-
-    public function __construct(EurekaProfiler_Session $session)
-    {
-        parent::__construct($session);
-        $this->query = &$this->name;
-        $this->type = 'db';
-    }
-
-}
-
-class EurekaProfiler_Included
-{
-
-    public $path;
-    public $size;
-
-    public function __construct($path, $size)
-    {
-        $this->path = $path;
-        $this->size = $size;
-    }
-
-}
