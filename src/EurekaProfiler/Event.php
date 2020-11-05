@@ -28,7 +28,7 @@ class EurekaProfiler_Event
     public $duration;
 
     /**
-     * @var EurekaProfiler_Event
+     * @var EurekaProfiler_Event|null
      */
     public $parent;
 
